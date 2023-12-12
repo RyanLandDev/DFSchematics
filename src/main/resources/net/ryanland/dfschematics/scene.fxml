@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ryanland.dfschematics.Controller">
+   <center>
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="307.0" prefWidth="600.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="52.0" prefWidth="600.0" text="DFSchematics" textAlignment="CENTER">
+               <font>
+                  <Font name="Calibri Bold" size="36.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="15.0" top="20.0" />
+               </padding>
+            </Label>
+            <Button fx:id="filePicker" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#pickFile" prefHeight="25.0" prefWidth="501.0" text="Pick file..." VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Button>
+            <Label fx:id="fileStatus" text="Reading..." visible="false">
+               <VBox.margin>
+                  <Insets bottom="45.0" />
+               </VBox.margin>
+            </Label>
+            <HBox alignment="CENTER" prefHeight="26.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="sendRecode" disable="true" mnemonicParsing="false" onAction="#sendTemplateToRecode" text="Send to recode">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="sendCodeClient" alignment="CENTER_RIGHT" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#sendTemplateToCodeClient" text="Send to CodeClient">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="33.0" prefWidth="600.0">
+               <children>
+                  <Button fx:id="sendBuilderRecode" disable="true" mnemonicParsing="false" onAction="#sendBuilderTemplateToRecode" text="Send Builder to recode">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="sendBuilderCodeClient" disable="true" layoutX="153.0" layoutY="21.0" mnemonicParsing="false" onAction="#sendBuilderTemplateToCodeClient" text="Send Builder to CodeClient">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="30.0" />
+               </VBox.margin>
+            </HBox>
+            <Button layoutX="224.0" layoutY="296.0" mnemonicParsing="false" onAction="#viewInstructions" text="Instructions">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="75.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane prefHeight="97.0" prefWidth="59.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="versionLabel" alignment="BOTTOM_LEFT" onMouseClicked="#onVersionClick" onMouseEntered="#onVersionEnter" onMouseExited="#onVersionExit" prefHeight="17.0" prefWidth="34.0" text="v1.0.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Label fx:id="recodeStatus" layoutX="477.0" layoutY="80.0" text="Connecting to recode...">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </HBox.margin>
+            </Label>
+            <Label fx:id="codeClientStatus" text="Connecting to CodeClient...">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" />
+               </HBox.margin>
+            </Label>
+            <Button fx:id="retryButton" mnemonicParsing="false" onAction="#retryConnections" prefHeight="0.0" prefWidth="49.0" text="Retry">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="10.0" right="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>
