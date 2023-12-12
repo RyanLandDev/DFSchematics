@@ -75,7 +75,6 @@ public class Controller implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Schematic...");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Downloads"));
-        fileChooser.setInitialDirectory(new File("C:\\Users\\Ryan\\AppData\\Roaming\\.minecraft\\config\\worldedit\\schematics"));
 
         // extension filter
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Sponge schematic files (*.schem)", "*.schem");
