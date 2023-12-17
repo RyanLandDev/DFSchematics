@@ -56,9 +56,9 @@ public class TemplateFactory {
     private SetVariableCreateList getMetadata(String fallbackName) {
         List<Value> values = new ArrayList<>();
 
-        values.add(new Text(Objects.requireNonNullElse(file.getName(), fallbackName)));
-        values.add(new Text(Objects.requireNonNullElse(file.getAuthor(), "Unknown Author")));
-        values.add(new Vector(file.getWidth(), file.getHeight(), file.getLength()));
+        values.add(new Text(Objects.requireNonNullElse(file.name(), fallbackName)));
+        values.add(new Text(Objects.requireNonNullElse(file.author(), "Unknown Author")));
+        values.add(new Vector(file.width(), file.height(), file.length()));
 
         return new SetVariableCreateList(new Variable("Metadata"), values);
     }

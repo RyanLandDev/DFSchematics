@@ -6,20 +6,12 @@
 
     <groupId>net.ryanland</groupId>
     <artifactId>DFSchematics</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>DFSchematics</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <junit.version>5.7.1</junit.version>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -64,7 +56,7 @@
         <dependency>
             <groupId>net.sandrohc</groupId>
             <artifactId>schematic4j</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 

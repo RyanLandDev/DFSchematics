@@ -1,16 +1,14 @@
 package net.ryanland.dfschematics;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import net.ryanland.dfschematics.df.code.CodeLine;
 import net.ryanland.dfschematics.schematic.DFSchematic;
-import net.sandrohc.schematic4j.SchematicUtil;
+import net.sandrohc.schematic4j.SchematicLoader;
 import net.sandrohc.schematic4j.exception.ParsingException;
 
 import java.io.File;
@@ -57,7 +55,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    void retryConnections(ActionEvent event) {
+    void retryConnections() {
         ItemAPIManager.attemptConnections();
     }
 
@@ -77,7 +75,7 @@ public class Controller implements Initializable {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Downloads"));
 
         // extension filter
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Sponge schematic files (*.schem)", "*.schem");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Schematic files (*.schem *.litematic *.schematic)", "*.schem", "*.litematic", "*.schematic");
         fileChooser.getExtensionFilters().add(extFilter);
 
         // choose file
@@ -99,7 +97,7 @@ public class Controller implements Initializable {
 
         // read schematic
         try {
-            schematic = new DFSchematic(SchematicUtil.load(file));
+            schematic = new DFSchematic(SchematicLoader.load(file));
         } catch (ParsingException e) {
             error("Error: " + e.getMessage());
             return;
@@ -125,7 +123,7 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    void sendTemplateToRecode() throws IOException, InterruptedException {
+    void sendTemplateToRecode() throws InterruptedException {
         List<CodeLine> codeLines = schematic.getTemplateFactory().generate(selectedFile.getName(), true);
         ItemAPIManager.sendTemplatesToRecode(codeLines, selectedFile.getName());
         success("Template" + (codeLines.size() == 1 ? "" : "s") + " sent");

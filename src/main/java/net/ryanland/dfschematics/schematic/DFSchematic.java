@@ -2,8 +2,8 @@ package net.ryanland.dfschematics.schematic;
 
 import net.sandrohc.schematic4j.schematic.Schematic;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
+import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,14 +42,13 @@ public class DFSchematic {
 
     private void read() {
         // iterates through all x, then z, then y - same as RepeatOnGrid
-        int[] offset = schematic.getOffset();
-        System.out.println("offset xyz: " + Arrays.toString(offset));
-        for (int y = 0; y < schematic.getHeight(); y++) {
-            for (int z = 0; z < schematic.getLength(); z++) {
-                for (int x = 0; x < schematic.getWidth(); x++) {
+        SchematicBlockPos offset = schematic.offset();
+        for (int y = 0; y < schematic.height(); y++) {
+            for (int z = 0; z < schematic.length(); z++) {
+                for (int x = 0; x < schematic.width(); x++) {
                     //System.out.println("xyz: " + x + " " + y + " " + z);
                     //SchematicBlock block = schematic.getBlock(x+offset[0], y+offset[1], z+offset[2]);
-                    SchematicBlock block = schematic.getBlock(x, y, z);
+                    SchematicBlock block = schematic.block(x, y, z);
 
                     String material = block.block;
                     Map<String, String> states = new HashMap<>(block.states);
