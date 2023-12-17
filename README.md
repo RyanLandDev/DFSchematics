@@ -1,4 +1,4 @@
-# DFSchematics v1.0.0
+# DFSchematics v1.1.0
 Tool to import schematic files into DiamondFire.
 
 ![](src/main/resources/example.png)
@@ -19,13 +19,13 @@ To install the application, go to the [releases page](https://github.com/RyanLan
 
 1. Launch Minecraft with either [recode](https://github.com/homchom/recode) or [CodeClient](https://github.com/DFOnline/CodeClient) installed.
 2. Navigate to a plot in dev mode.
-3. Open the program, click _'Pick file...'_ and choose a Sponge schematic file (`.schem`)*.
+3. Open the program, click _'Pick file...'_ and choose a schematic file (`.schem` `.litematic` `.schematic`)*.
 4. Send the generated schematic data template(s) to Minecraft and place them in order.
 5. Send the builder template to Minecraft and place it.
 6. Call the builder function and configure the chest parameters.
 
-_*At the moment, only Sponge schematics are compatible, although additional formats may be supported in the future.
-If you have a different format, please convert it to a Sponge schematic beforehand._
+_*At the moment, only Sponge, Litematic and Schematica schematics are compatible, although additional formats may be supported in the future.
+If you have a different format, please convert it to a valid format beforehand._
 
 ## Support
 
@@ -37,9 +37,7 @@ Do you have a suggestion or have you found a bug? Please [open an issue](https:/
 or contact me on Discord at `ryandev.`.
 
 ## Dependencies
-- Java 17
 - JavaFX 17
-- [Sponge Schematic Format](https://github.com/SpongePowered/Schematic-Specification)
 - [schematic4j](https://github.com/SandroHc/schematic4j)
 - [Java-WebSocket](https://github.com/TooTallNate/Java-WebSocket)
 - [recode](https://github.com/homchom/recode) Item API
