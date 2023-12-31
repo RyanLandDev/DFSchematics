@@ -35,11 +35,11 @@ public final class StructurePart {
 
     private static final String[] compressChars;
     static {
-        compressChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ !#|%&+/<>?@()-=*,:;[]^_`{}~".split("");
+        compressChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!#|%&+/<>?@()-=*,:;[]^_`{}~".split("");
     }
 
     public String getText() {
-        int length = compressChars.length; // 81, index 0-80
+        int length = compressChars.length; // 80, index 0-79
 
         int char1Index = (int) Math.floor(blockIndex / length) - 1;
         String char1;

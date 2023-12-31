@@ -1,4 +1,4 @@
-# DFSchematics v1.1.0
+# DFSchematics v1.2.0
 Tool to import schematic files into DiamondFire.
 
 ![](src/main/resources/example.png)
@@ -24,7 +24,7 @@ To install the application, go to the [releases page](https://github.com/RyanLan
 5. Send the builder template to Minecraft and place it.
 6. Call the builder function and configure the chest parameters.
 
-_*At the moment, only Sponge, Litematic and Schematica schematics are compatible, although additional formats may be supported in the future.
+_*At the moment, only Sponge, Litematica and Schematica schematics are compatible, although additional formats may be supported in the future.
 If you have a different format, please convert it to a valid format beforehand._
 
 ## Support

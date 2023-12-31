@@ -1,7 +1,7 @@
 package net.ryanland.dfschematics.schematic;
 
 import net.ryanland.dfschematics.df.code.*;
-import net.ryanland.dfschematics.df.value.Text;
+import net.ryanland.dfschematics.df.value.Str;
 import net.ryanland.dfschematics.df.value.Value;
 import net.ryanland.dfschematics.df.value.Variable;
 import net.ryanland.dfschematics.df.value.Vector;
@@ -23,7 +23,7 @@ public class TemplateFactory {
 
     public List<CodeLine> generate(String fallbackName, boolean split) {
         CodeLine codeLine1 = new CodeLine();
-        codeLine1.add(new Function(Objects.requireNonNullElse(file.getName(), fallbackName)));
+        codeLine1.add(new Function(Objects.requireNonNullElse(file.name(), fallbackName)));
         codeLine1.add(getMetadata(fallbackName));
         codeLine1.addAll(getPalette());
         List<CodeBlock> blocks = getBlocks();
@@ -50,14 +50,21 @@ public class TemplateFactory {
             lines.add(codeLine1);
         }
 
+        // block entities
+        if (!schematic.getHeads().isEmpty() || !schematic.getSigns().isEmpty()) {
+            CodeLine line = new CodeLine();
+            line.addAll(getBlockEntities());
+            lines.add(line);
+        }
+
         return lines;
     }
 
     private SetVariableCreateList getMetadata(String fallbackName) {
         List<Value> values = new ArrayList<>();
 
-        values.add(new Text(Objects.requireNonNullElse(file.name(), fallbackName)));
-        values.add(new Text(Objects.requireNonNullElse(file.author(), "Unknown Author")));
+        values.add(new Str(Objects.requireNonNullElse(file.name(), fallbackName)));
+        values.add(new Str(Objects.requireNonNullElse(file.author(), "Unknown Author")));
         values.add(new Vector(file.width(), file.height(), file.length()));
 
         return new SetVariableCreateList(new Variable("Metadata"), values);
@@ -77,7 +84,7 @@ public class TemplateFactory {
         }
         texts.add(text.substring(0, text.length()-1));
 
-        return listToCodeBlocks(texts, "Palette");
+        return textsListToCodeBlocks(texts, "Palette");
     }
 
     private List<CodeBlock> getBlocks() {
@@ -94,17 +101,42 @@ public class TemplateFactory {
         }
         texts.add(text.substring(0, text.length()-1));
 
-        return listToCodeBlocks(texts, "Blocks");
+        return textsListToCodeBlocks(texts, "Blocks");
     }
 
-    private static List<CodeBlock> listToCodeBlocks(List<String> texts, String listName) {
-        List<Text> list = texts.stream().map(Text::new).toList();
-        List<List<Text>> textsLists = partition(list, 26);// split texts into batches of 26, to fit in codeblock
+    private List<CodeBlock> getBlockEntities() {
+        List<Value> values = new ArrayList<>();
+
+        // heads format: H6,1,8,RyanLand;3,4,5,oiaejroaiejroaapPEOFIJapeoifja
+        List<Head> heads = schematic.getHeads();
+        if (heads.size() > 0) {
+            String str = "H";
+            for (Head head : heads) {
+                str += head.pos().x + "," + head.pos().y + "," + head.pos().z + "," + head.texture() + ";";
+                if (str.length() > 2400) {
+                    values.add(new Str(str.substring(0, str.length() - 1)));
+                }
+            }
+            values.add(new Str(str.substring(0, str.length() - 1)));
+        }
+
+        // signs use a sign item with lores
+        values.addAll(schematic.getSigns());
+
+        return listToCodeBlocks(values, "BlockEntities");
+    }
+
+    private static List<CodeBlock> textsListToCodeBlocks(List<String> texts, String listName) {
+        return listToCodeBlocks(texts.stream().map(Str::new).toList(), listName);
+    }
+
+    private static <V extends Value> List<CodeBlock> listToCodeBlocks(List<V> list, String listName) {
+        List<List<V>> textsLists = partition(list, 26);// split values into batches of 26, to fit in codeblock
 
         List<CodeBlock> line = new ArrayList<>();
         Variable var = new Variable(listName);
         int i = 0;
-        for (List<Text> l : textsLists) {
+        for (List<V> l : textsLists) {
             if (i == 0) line.add(new SetVariableCreateList(var, l));
             else line.add(new SetVariableAppendValue(var, l));
             i++;

@@ -2,11 +2,11 @@ package net.ryanland.dfschematics.df.value;
 
 import com.google.gson.JsonObject;
 
-public class Text implements Value {
+public class Str implements Value {
 
     private final String value;
 
-    public Text(String value) {
+    public Str(String value) {
         this.value = value;
     }
 
