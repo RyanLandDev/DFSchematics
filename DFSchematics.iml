@@ -21,7 +21,6 @@
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.10.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.22.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.22.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains:annotations:24.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.java-websocket:Java-WebSocket:1.5.4" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:2.0.6" level="project" />
     <orderEntry type="library" name="Maven: net.sandrohc:schematic4j:1.1.0" level="project" />
