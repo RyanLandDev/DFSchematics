@@ -115,6 +115,7 @@ public class TemplateFactory {
                 str += head.pos().x + "," + head.pos().y + "," + head.pos().z + "," + head.texture() + ";";
                 if (str.length() > 2400) {
                     values.add(new Str(str.substring(0, str.length() - 1)));
+                    str = "H";
                 }
             }
             values.add(new Str(str.substring(0, str.length() - 1)));

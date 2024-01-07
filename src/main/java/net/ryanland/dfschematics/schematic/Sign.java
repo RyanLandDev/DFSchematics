@@ -37,4 +37,8 @@ public record Sign(SchematicBlockPos pos, String[] frontLines, String[] backLine
     private String extra(String input) {
         return "{\"extra\":[{\"text\":\"%s\"}],\"text\":\"\"}".formatted(input);
     }
+
+    public boolean isEmpty() {
+        return Arrays.stream(frontLines).allMatch(String::isEmpty) && Arrays.stream(backLines).allMatch(String::isEmpty);
+    }
 }

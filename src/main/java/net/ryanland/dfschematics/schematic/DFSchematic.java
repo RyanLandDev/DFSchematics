@@ -43,7 +43,6 @@ public class DFSchematic {
     }
 
     private static final Map<String, String> DEFAULT_BLOCK_STATES = Map.of(
-        "waterlogged", "false",
         "snowy", "false",
         "axis", "y",
         "lit", "false",
@@ -77,21 +76,25 @@ public class DFSchematic {
         }
         structure.finalizePart();
 
-        String regex = "^\\{\"text\":\"|\"}$";
+        //TODO support sign colors
+        //TODO support sign glowing ink sac
+        String regex = "^\\{.*\"text\":\"|\"}$";
         for (SchematicBlockEntity block : schematic.blockEntities().toList()) {
             if (block.data.containsKey("front_text")) {
                 // Signs after MC 1.20 ----------
                 String[] front = ((List<String>) ((Map<String, Object>) block.data.get("front_text")).get("messages")).stream().map(str -> str.replaceAll(regex, "")).toArray(String[]::new);
                 String[] back = ((List<String>) ((Map<String, Object>) block.data.get("back_text")).get("messages")).stream().map(str -> str.replaceAll(regex, "")).toArray(String[]::new);
-                signs.add(new Sign(block.pos, front, back));
+                Sign sign = new Sign(block.pos, front, back);
+                if (!sign.isEmpty()) signs.add(sign);
             } else if (block.data.containsKey("Text1")) {
                 // Signs before MC 1.20 ---------
-                signs.add(new Sign(block.pos, new String[]{
+                Sign sign = new Sign(block.pos, new String[]{
                     ((String) block.data.get("Text1")).replaceAll(regex, ""),
                     ((String) block.data.get("Text2")).replaceAll(regex, ""),
                     ((String) block.data.get("Text3")).replaceAll(regex, ""),
                     ((String) block.data.get("Text4")).replaceAll(regex, "")},
-                    new String[]{"", "", "", ""}));
+                    new String[]{"", "", "", ""});
+                if (!sign.isEmpty()) signs.add(sign);
             } else if (block.data.containsKey("SkullOwner")) {
                 // Heads -------
                 Map<String, Object> data = (TreeMap<String, Object>) block.data.get("SkullOwner");
