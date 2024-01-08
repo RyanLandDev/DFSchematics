@@ -1,5 +1,10 @@
 package net.ryanland.dfschematics.schematic;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.ComponentSerializer;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.sandrohc.schematic4j.schematic.Schematic;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockEntity;
@@ -76,23 +81,23 @@ public class DFSchematic {
         }
         structure.finalizePart();
 
-        //TODO support sign colors
         //TODO support sign glowing ink sac
-        String regex = "^\\{.*\"text\":\"|\"}$";
         for (SchematicBlockEntity block : schematic.blockEntities().toList()) {
             if (block.data.containsKey("front_text")) {
                 // Signs after MC 1.20 ----------
-                String[] front = ((List<String>) ((Map<String, Object>) block.data.get("front_text")).get("messages")).stream().map(str -> str.replaceAll(regex, "")).toArray(String[]::new);
-                String[] back = ((List<String>) ((Map<String, Object>) block.data.get("back_text")).get("messages")).stream().map(str -> str.replaceAll(regex, "")).toArray(String[]::new);
+               String[] front = ((List<String>) ((Map<String, Object>) block.data.get("front_text")).get("messages")).stream()
+                    .map(this::jsonToLegacy).toArray(String[]::new);
+                String[] back = ((List<String>) ((Map<String, Object>) block.data.get("back_text")).get("messages")).stream()
+                    .map(this::jsonToLegacy).toArray(String[]::new);
                 Sign sign = new Sign(block.pos, front, back);
                 if (!sign.isEmpty()) signs.add(sign);
             } else if (block.data.containsKey("Text1")) {
                 // Signs before MC 1.20 ---------
                 Sign sign = new Sign(block.pos, new String[]{
-                    ((String) block.data.get("Text1")).replaceAll(regex, ""),
-                    ((String) block.data.get("Text2")).replaceAll(regex, ""),
-                    ((String) block.data.get("Text3")).replaceAll(regex, ""),
-                    ((String) block.data.get("Text4")).replaceAll(regex, "")},
+                    jsonToLegacy(((String) block.data.get("Text1"))),
+                    jsonToLegacy(((String) block.data.get("Text2"))),
+                    jsonToLegacy(((String) block.data.get("Text3"))),
+                    jsonToLegacy(((String) block.data.get("Text4")))},
                     new String[]{"", "", "", ""});
                 if (!sign.isEmpty()) signs.add(sign);
             } else if (block.data.containsKey("SkullOwner")) {
@@ -104,5 +109,10 @@ public class DFSchematic {
                 heads.add(new Head(block.pos(), texture));
             }
         }
+    }
+
+    private String jsonToLegacy(String json) {
+        Component component = GsonComponentSerializer.gson().deserialize(json);
+        return LegacyComponentSerializer.legacySection().serialize(component);
     }
 }
