@@ -2,6 +2,9 @@ package net.ryanland.dfschematics.schematic;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.ryanland.dfschematics.df.value.Item;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 
@@ -20,18 +23,14 @@ public record Sign(SchematicBlockPos pos, String[] frontLines, String[] backLine
         JsonObject tag = new JsonObject();
         JsonObject display = new JsonObject();
         JsonArray lore = new JsonArray(8);
-        for (String frontLine : frontLines) {
-            lore.add(extra(frontLine));
-        }
-        for (String backLine : backLines) {
-            lore.add(extra(backLine));
-        }
+        for (String frontLine : frontLines) lore.add(frontLine);
+        for (String backLine : backLines) lore.add(backLine);
         display.add("Lore", lore);
         display.addProperty("Name", extra("%s,%s,%s".formatted(pos.x, pos.y, pos.z)));
         tag.add("display", display);
         item.add("tag", tag);
         return item.toString();
-        // result: Oak sign with lores; first 3 are xyz, 4-7 front lines, 8-11 back lines
+        // result: Oak sign with lores; name is xyz, 1-4 front lines, 5-8 back lines
     }
 
     private String extra(String input) {
@@ -39,6 +38,12 @@ public record Sign(SchematicBlockPos pos, String[] frontLines, String[] backLine
     }
 
     public boolean isEmpty() {
-        return Arrays.stream(frontLines).allMatch(String::isEmpty) && Arrays.stream(backLines).allMatch(String::isEmpty);
+        return Arrays.stream(frontLines).allMatch(this::isComponentEmpty) &&
+            Arrays.stream(backLines).allMatch(this::isComponentEmpty);
+    }
+
+    private boolean isComponentEmpty(String json) {
+        Component component = GsonComponentSerializer.gson().deserialize(json);
+        return LegacyComponentSerializer.legacySection().serialize(component).isEmpty();
     }
 }

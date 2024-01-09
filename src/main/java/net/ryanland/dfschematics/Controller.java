@@ -8,7 +8,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import net.ryanland.dfschematics.df.code.CodeLine;
 import net.ryanland.dfschematics.schematic.DFSchematic;
-import net.ryanland.dfschematics.schematic.TemplateFactory;
 import net.sandrohc.schematic4j.SchematicLoader;
 import net.sandrohc.schematic4j.exception.ParsingException;
 
