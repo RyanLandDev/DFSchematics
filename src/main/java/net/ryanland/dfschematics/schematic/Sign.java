@@ -10,7 +10,7 @@ import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 
 import java.util.Arrays;
 
-public record Sign(SchematicBlockPos pos, String[] frontLines, String[] backLines) implements Item {
+public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item {
 
     // example sign
     // {Count:1b,DF_NBT:3578,id:\"minecraft:oak_sign\",tag:{display:{Lore:['{\"extra\":[{\"text\":\"1front\"}]}','{\"extra\":[{\"text\":\"2front\"}]}','{\"extra\":[{\"text\":\"3front\"}]}','{\"extra\":[{\"text\":\"4front\"}]}','{\"extra\":[{\"text\":\"1back\"}]}','{\"extra\":[{\"text\":\"2back\"}]}','{\"extra\":[{\"text\":\"3back\"}]}','{\"extra\":[{\"text\":\"4back\"}]}']}}}
@@ -20,30 +20,50 @@ public record Sign(SchematicBlockPos pos, String[] frontLines, String[] backLine
         JsonObject item = new JsonObject();
         item.addProperty("Count", 1);
         item.addProperty("id", "minecraft:oak_sign");
-        JsonObject tag = new JsonObject();
-        JsonObject display = new JsonObject();
+
         JsonArray lore = new JsonArray(8);
-        for (String frontLine : frontLines) lore.add(frontLine);
-        for (String backLine : backLines) lore.add(backLine);
+        for (String frontLine : front.lines) lore.add(frontLine);
+        lore.add(front.getDFColor());
+        lore.add(front.getDFGlowing());
+        for (String backLine : back.lines) lore.add(backLine);
+        lore.add(back.getDFColor());
+        lore.add(back.getDFGlowing());
+
+        JsonObject display = new JsonObject();
         display.add("Lore", lore);
         display.addProperty("Name", extra("%s,%s,%s".formatted(pos.x, pos.y, pos.z)));
+
+        JsonObject tag = new JsonObject();
         tag.add("display", display);
         item.add("tag", tag);
+
         return item.toString();
-        // result: Oak sign with lores; name is xyz, 1-4 front lines, 5-8 back lines
+        // result: Oak sign with lores; name is xyz, 1-4 front lines, 5-6 front color+glowing, 7-10 back lines, 11-12 back color+glowing
     }
 
-    private String extra(String input) {
+    private static String extra(String input) {
         return "{\"extra\":[{\"text\":\"%s\"}],\"text\":\"\"}".formatted(input);
     }
 
     public boolean isEmpty() {
-        return Arrays.stream(frontLines).allMatch(this::isComponentEmpty) &&
-            Arrays.stream(backLines).allMatch(this::isComponentEmpty);
+        return Arrays.stream(front.lines).allMatch(this::isComponentEmpty) &&
+            Arrays.stream(back.lines).allMatch(this::isComponentEmpty);
     }
 
     private boolean isComponentEmpty(String json) {
         Component component = GsonComponentSerializer.gson().deserialize(json);
         return LegacyComponentSerializer.legacySection().serialize(component).isEmpty();
+    }
+
+    record Side(String[] lines, boolean glowing, String color) {
+
+        private String getDFGlowing() {
+            return extra(glowing ? "Enabled" : "Disabled");
+        }
+
+        private String getDFColor() {
+            return extra(color.substring(0, 1).toUpperCase() + color.substring(1).replaceAll("_", " "));
+        }
+
     }
 }

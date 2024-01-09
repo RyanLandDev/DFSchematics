@@ -76,29 +76,42 @@ public class DFSchematic {
         }
         structure.finalizePart();
 
-        //TODO support sign glowing ink sac
         for (SchematicBlockEntity block : schematic.blockEntities().toList()) {
             if (block.data.containsKey("front_text")) {
                 // Signs after MC 1.20 ----------
-               String[] front = ((List<String>) ((Map<String, Object>) block.data.get("front_text")).get("messages")).toArray(String[]::new);
-                String[] back = ((List<String>) ((Map<String, Object>) block.data.get("back_text")).get("messages")).toArray(String[]::new);
+                Map<String, Object> frontCompound = ((Map<String, Object>) block.data.get("front_text"));
+                Map<String, Object> backCompound = ((Map<String, Object>) block.data.get("back_text"));
+
+                Sign.Side front = new Sign.Side(
+                    ((List<String>) frontCompound.get("messages")).toArray(String[]::new),
+                    ((byte) frontCompound.get("has_glowing_text")) == 1,
+                    (String) frontCompound.get("color")
+                );
+
+                Sign.Side back = new Sign.Side(
+                    ((List<String>) backCompound.get("messages")).toArray(String[]::new),
+                    ((byte) backCompound.get("has_glowing_text")) == 1,
+                    (String) backCompound.get("color")
+                );
+
                 Sign sign = new Sign(block.pos, front, back);
                 if (!sign.isEmpty()) signs.add(sign);
+
             } else if (block.data.containsKey("Text1")) {
                 // Signs before MC 1.20 ---------
-                Sign sign = new Sign(block.pos, new String[]{
+                Sign sign = new Sign(block.pos, new Sign.Side(new String[]{
                     ((String) block.data.get("Text1")),
                     ((String) block.data.get("Text2")),
                     ((String) block.data.get("Text3")),
-                    ((String) block.data.get("Text4"))},
-                    new String[]{"", "", "", ""});
+                    ((String) block.data.get("Text4"))}, false, "black"),
+                    new Sign.Side(new String[]{"", "", "", ""}, false, "black"));
                 if (!sign.isEmpty()) signs.add(sign);
             } else if (block.data.containsKey("SkullOwner")) {
                 // Heads -------
                 Map<String, Object> data = (TreeMap<String, Object>) block.data.get("SkullOwner");
                 String owner = (String) data.get("Name");
                 String value = (String) ((Map<String, Object>) ((List<Object>) ((Map<String, Object>) data.get("Properties")).get("textures")).get(0)).get("Value");
-                String texture = owner == null || owner.equals("DF-HEAD") ? value : owner;
+                String texture = (owner == null || owner.equals("DF-HEAD") ? value : owner).substring(88);//remove unnecessary eyJ0ZX....
                 heads.add(new Head(block.pos(), texture));
             }
         }
