@@ -59,7 +59,7 @@ public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item
     record Side(String[] lines, boolean glowing, String color) {
 
         private String getDFGlowing() {
-            return extra(glowing ? "Enabled" : "Disabled");
+            return extra(glowing ? "Enable" : "Disable");
         }
 
         private String getDFColor() {
