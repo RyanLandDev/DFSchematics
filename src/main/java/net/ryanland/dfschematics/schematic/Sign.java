@@ -51,6 +51,7 @@ public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item
     }
 
     private boolean isComponentEmpty(String json) {
+        if (json.isEmpty()) return true;
         Component component = GsonComponentSerializer.gson().deserialize(json);
         return LegacyComponentSerializer.legacySection().serialize(component).isEmpty();
     }

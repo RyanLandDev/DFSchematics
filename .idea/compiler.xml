@@ -10,8 +10,5 @@
         <module name="DFSchematics" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="DFSchematics" target="17" />
-    </bytecodeTargetLevel>
   </component>
 </project>
