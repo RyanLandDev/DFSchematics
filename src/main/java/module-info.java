@@ -11,4 +11,6 @@ module net.ryanland.dfschematics {
 
     opens net.ryanland.dfschematics to javafx.fxml;
     exports net.ryanland.dfschematics;
+    exports net.ryanland.dfschematics.df;
+    opens net.ryanland.dfschematics.df to javafx.fxml;
 }

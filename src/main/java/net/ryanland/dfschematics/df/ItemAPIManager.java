@@ -1,10 +1,11 @@
-package net.ryanland.dfschematics;
+package net.ryanland.dfschematics.df;
 
 import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
+import net.ryanland.dfschematics.Controller;
 import net.ryanland.dfschematics.df.code.CodeLine;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;

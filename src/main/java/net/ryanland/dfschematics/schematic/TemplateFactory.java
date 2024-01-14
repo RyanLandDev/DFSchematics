@@ -1,10 +1,7 @@
 package net.ryanland.dfschematics.schematic;
 
 import net.ryanland.dfschematics.df.code.*;
-import net.ryanland.dfschematics.df.value.Str;
-import net.ryanland.dfschematics.df.value.Value;
-import net.ryanland.dfschematics.df.value.Variable;
-import net.ryanland.dfschematics.df.value.Vector;
+import net.ryanland.dfschematics.df.value.*;
 import net.sandrohc.schematic4j.schematic.Schematic;
 
 import java.util.ArrayList;
@@ -21,13 +18,18 @@ public class TemplateFactory {
         this.file = schematic.getSchematic();
     }
 
-    public List<CodeLine> generate(String fallbackName, boolean split) {
+    public List<CodeLine> generate(boolean split) {
         CodeLine codeLine1 = new CodeLine();
-        codeLine1.add(new Function(Objects.requireNonNullElse(file.name(), fallbackName)));
-        codeLine1.add(getMetadata(fallbackName));
+        codeLine1.add(new Function(schematic.getName()));
+        codeLine1.add(getMetadata());
         codeLine1.addAll(getPalette());
-        List<CodeBlock> blocks = getBlocks();
 
+        // block entities
+        if (!schematic.getHeads().isEmpty() || !schematic.getSigns().isEmpty()) {
+            codeLine1.addAll(getBlockEntities());
+        }
+
+        List<CodeBlock> blocks = getBlocks();
         List<CodeLine> lines = new ArrayList<>();
         if (split) {
             //max 2 codeblocks per template for block data, for big schematics with large block data, otherwise template nbt max is reached
@@ -50,21 +52,20 @@ public class TemplateFactory {
             lines.add(codeLine1);
         }
 
-        // block entities
-        if (!schematic.getHeads().isEmpty() || !schematic.getSigns().isEmpty()) {
+        if (!schematic.getTrackedBlocks().getBlocks().isEmpty()) {
             CodeLine line = new CodeLine();
-            line.addAll(getBlockEntities());
+            line.addAll(getTrackedBlocks());
             lines.add(line);
         }
 
         return lines;
     }
 
-    private SetVariableCreateList getMetadata(String fallbackName) {
+    private SetVariableCreateList getMetadata() {
         List<Value> values = new ArrayList<>();
 
-        values.add(new Str(Objects.requireNonNullElse(file.name(), fallbackName)));
-        values.add(new Str(Objects.requireNonNullElse(file.author(), "Unknown Author")));
+        values.add(new Str(schematic.getName()));
+        values.add(new Str(schematic.getAuthor()));
         values.add(new Vector(file.width(), file.height(), file.length()));
 
         return new SetVariableCreateList(new Variable("Metadata"), values);
@@ -127,17 +128,29 @@ public class TemplateFactory {
         return listToCodeBlocks(values, "BlockEntities");
     }
 
+    private List<CodeBlock> getTrackedBlocks() {
+        List<CodeBlock> blocks = new ArrayList<>();
+        Location offset = new Location((float) schematic.getTrackedBlocks().getOffset()[0], (float) schematic.getTrackedBlocks().getOffset()[1], (float) schematic.getTrackedBlocks().getOffset()[2]);
+        for (TrackedBlock block : schematic.getTrackedBlocks().getBlocks()) {
+            blocks.addAll(listToCodeBlocks(block.getLocations().stream().map(loc -> loc.add(offset)).toList(), block.getVariable()));
+        }
+        return blocks;
+    }
+
     private static List<CodeBlock> textsListToCodeBlocks(List<String> texts, String listName) {
         return listToCodeBlocks(texts.stream().map(Str::new).toList(), listName);
     }
 
     private static <V extends Value> List<CodeBlock> listToCodeBlocks(List<V> list, String listName) {
-        List<List<V>> textsLists = partition(list, 26);// split values into batches of 26, to fit in codeblock
+        return listToCodeBlocks(list, new Variable(listName));
+    }
+
+    private static <V extends Value> List<CodeBlock> listToCodeBlocks(List<V> list, Variable var) {
+        List<List<V>> valuesLists = partition(list, 26);// split values into batches of 26, to fit in codeblock
 
         List<CodeBlock> line = new ArrayList<>();
-        Variable var = new Variable(listName);
         int i = 0;
-        for (List<V> l : textsLists) {
+        for (List<V> l : valuesLists) {
             if (i == 0) line.add(new SetVariableCreateList(var, l));
             else line.add(new SetVariableAppendValue(var, l));
             i++;
@@ -148,7 +161,7 @@ public class TemplateFactory {
     private static <T> List<List<T>> partition(List<T> collection, int batchSize) {
         int i = 0;
         List<List<T>> batches = new ArrayList<>();
-        while(i < collection.size()) {
+        while (i < collection.size()) {
             int nextInc = Math.min(collection.size()-i, batchSize);
             List<T> batch = collection.subList(i, i+nextInc);
             batches.add(batch);

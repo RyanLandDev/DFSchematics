@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import net.ryanland.dfschematics.df.ItemAPIManager;
 
 import java.io.IOException;
 
@@ -21,6 +22,7 @@ public class DFSchematics extends Application {
         stage.setTitle("DFSchematics");
         stage.setScene(scene);
         stage.getIcons().add(new Image(String.valueOf(DFSchematics.class.getResource("logo.png"))));
+        stage.setResizable(false);
         stage.show();
 
         DFSchematics.stage = stage;
@@ -31,6 +33,4 @@ public class DFSchematics extends Application {
     public static void main(String[] args) {
         launch();
     }
-
-
 }

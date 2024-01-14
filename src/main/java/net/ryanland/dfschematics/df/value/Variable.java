@@ -45,4 +45,10 @@ public class Variable/*<T extends Value>*/ implements Value {
         json.addProperty("scope", scope.getId());
         return json;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return getName().equals(((Variable) obj).getName()) &&
+            getScope().equals(((Variable) obj).getScope());
+    }
 }

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="392.0" prefWidth="439.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ryanland.dfschematics.ConfigController">
+   <children>
+      <Label fx:id="label" text="file" textAlignment="CENTER">
+         <font>
+            <Font name="Calibri Bold" size="20.0" />
+         </font>
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin>
+      </Label>
+      <VBox prefHeight="318.0" prefWidth="339.0">
+         <children>
+            <Label text="Schematic Name" />
+            <TextField fx:id="schemNameField" layoutX="10.0" layoutY="49.0" prefHeight="25.0" prefWidth="267.0">
+               <tooltip>
+                  <Tooltip text="The name of the schematic. Used for the function name and metadata.">
+                     <graphic>
+                        <TextField fx:id="nameField1" prefHeight="25.0" prefWidth="267.0">
+                           <tooltip>
+                              <Tooltip text="The name of the schematic. Used for the function name and metadata." />
+                           </tooltip>
+                        </TextField>
+                     </graphic>
+                  </Tooltip>
+               </tooltip>
+            </TextField>
+            <Label layoutX="10.0" layoutY="10.0" text="Schematic Author">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <TextField fx:id="authorField" layoutX="10.0" layoutY="29.0" prefHeight="25.0" prefWidth="267.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <tooltip>
+                  <Tooltip text="The author of the schematic. Used in metadata.">
+                     <graphic>
+                        <TextField fx:id="nameField" prefHeight="25.0" prefWidth="267.0">
+                           <tooltip>
+                              <Tooltip text="The name of the schematic. Used for the function name and metadata." />
+                           </tooltip>
+                        </TextField>
+                     </graphic>
+                  </Tooltip>
+               </tooltip>
+            </TextField>
+            <Label layoutX="10.0" layoutY="59.0" text="Tracked Blocks">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <ListView fx:id="trackedBlocks" prefHeight="74.0" prefWidth="339.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <tooltip>
+                  <Tooltip text="All locations with a matching tracked block inside of the schematic will be saved into a list variable." />
+               </tooltip>
+            </ListView>
+            <VBox prefHeight="66.0" prefWidth="339.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="32.0" prefWidth="339.0" spacing="5.0">
+                     <children>
+                        <TextField fx:id="varNameField" layoutX="10.0" layoutY="14.0" prefHeight="25.0" prefWidth="140.0" promptText="List variable name">
+                           <tooltip>
+                              <Tooltip text="The name the location list variable should be given." />
+                           </tooltip></TextField>
+                        <ChoiceBox fx:id="varScopePicker" prefHeight="25.0" prefWidth="122.0">
+                           <tooltip>
+                              <Tooltip text="The scope of the list variable." />
+                           </tooltip></ChoiceBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="29.0" prefWidth="339.0" spacing="5.0">
+                     <children>
+                        <TextField fx:id="blockField" prefHeight="25.0" prefWidth="140.0" promptText="Block (e.g. chest)">
+                           <tooltip>
+                              <Tooltip text="The material of the block that is looked for in the schematic." />
+                           </tooltip></TextField>
+                        <CheckBox fx:id="removeCheckBox" mnemonicParsing="false" text="Remove from structure">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                           <tooltip>
+                              <Tooltip text="When enabled, removes all instances of the block from the schematic by replacing them with air." />
+                           </tooltip>
+                        </CheckBox>
+                        <Button fx:id="addTrackedBlockButton" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#addTrackedBlock" prefHeight="25.0" prefWidth="42.0" text="Add" textAlignment="RIGHT">
+                           <HBox.margin>
+                              <Insets left="26.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <Label layoutX="10.0" layoutY="129.0" text="Tracked Block Offset XYZ">
+               <VBox.margin>
+                  <Insets top="5.0" />
+               </VBox.margin>
+            </Label>
+            <HBox prefHeight="28.0" prefWidth="204.0" spacing="5.0">
+               <children>
+                  <Spinner fx:id="offsetX" editable="true">
+                     <tooltip>
+                        <Tooltip text="The amount that should be added to every tracked block location's X." />
+                     </tooltip></Spinner>
+                  <Spinner fx:id="offsetY" editable="true" layoutX="10.0" layoutY="10.0">
+                     <tooltip>
+                        <Tooltip text="The amount that should be added to every tracked block location's Y." />
+                     </tooltip></Spinner>
+                  <Spinner fx:id="offsetZ" editable="true" layoutX="159.0" layoutY="10.0">
+                     <tooltip>
+                        <Tooltip text="The amount that should be added to every tracked block location's Z." />
+                     </tooltip></Spinner>
+               </children>
+               <VBox.margin>
+                  <Insets right="150.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+         <VBox.margin>
+            <Insets left="50.0" right="50.0" top="10.0" />
+         </VBox.margin>
+      </VBox>
+      <Button mnemonicParsing="false" onAction="#close" text="OK">
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+      </Button>
+   </children>
+</VBox>

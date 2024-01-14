@@ -1,5 +1,7 @@
 package net.ryanland.dfschematics.schematic;
 
+import net.ryanland.dfschematics.Controller;
+import net.ryanland.dfschematics.df.value.Location;
 import net.sandrohc.schematic4j.schematic.Schematic;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockEntity;
@@ -10,15 +12,23 @@ import java.util.*;
 public class DFSchematic {
 
     private final Schematic schematic;
-    private final StructureContainer structure = new StructureContainer();
     private final TemplateFactory templateFactory;
 
-    private final List<Head> heads = new ArrayList<>();
-    private final List<Sign> signs = new ArrayList<>();
+    private StructureContainer structure;
+    private List<Head> heads;
+    private List<Sign> signs;
+    private final TrackedBlocks trackedBlocks = new TrackedBlocks();
+
+    private String name;
+    private String author;
 
     public DFSchematic(Schematic schematic) {
         this.schematic = schematic;
         read();
+
+        name = Objects.requireNonNullElse(schematic.name(), Controller.selectedFile.getName().replaceAll("\\.schem$|\\.litematic$|\\.schematic$|", ""));
+        author = Objects.requireNonNullElse(schematic.author(), "Unknown");
+
         templateFactory = new TemplateFactory(this);
     }
 
@@ -42,6 +52,26 @@ public class DFSchematic {
         return signs;
     }
 
+    public TrackedBlocks getTrackedBlocks() {
+        return trackedBlocks;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
     private static final Map<String, String> DEFAULT_BLOCK_STATES = Map.of(
         "snowy", "false",
         "axis", "y",
@@ -50,7 +80,13 @@ public class DFSchematic {
         "open", "false"
     );
 
-    private void read() {
+    public void read() {
+        //reset in case of a re-read
+        structure = new StructureContainer();
+        heads = new ArrayList<>();
+        signs = new ArrayList<>();
+        trackedBlocks.reset();
+
         // iterates through all x, then z, then y - same as RepeatOnGrid
         SchematicBlockPos offset = schematic.offset();
         System.out.println("offset: " + offset);
@@ -60,10 +96,23 @@ public class DFSchematic {
                     //System.out.println("xyz: " + x + " " + y + " " + z);
                     SchematicBlock offsetBlock = schematic.block(x + offset.x, y + offset.y, z + offset.z);
                     SchematicBlock block = schematic.block(x, y, z);
-
+                    String material = block.block;
                     //System.out.println("offset: " + offsetBlock.block + " regular: " + block.block);
 
-                    String material = block.block;
+                    // Tracked Blocks
+                    boolean remove = false;
+                    for (TrackedBlock trackedBlock : trackedBlocks.getBlocks()) {
+                        if (material.equals("minecraft:"+trackedBlock.getMaterial())) {
+                            trackedBlock.addLocation(new Location(x, y, z));
+                            remove = trackedBlock.isRemoved();
+                            break;
+                        }
+                    }
+                    if (remove) {
+                        material = "air";
+                        block = new SchematicBlock("air");
+                    }
+
                     Map<String, String> states = new HashMap<>(block.states);
                     DEFAULT_BLOCK_STATES.forEach(states::remove);
                     String result = material + (states.isEmpty() ? "" : "[" + String.join(",",
