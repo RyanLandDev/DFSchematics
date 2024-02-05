@@ -19,6 +19,7 @@ public class DFSchematics extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(DFSchematics.class.getResource("scene.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        //setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
         stage.setTitle("DFSchematics");
         stage.setScene(scene);
         stage.getIcons().add(new Image(String.valueOf(DFSchematics.class.getResource("logo.png"))));

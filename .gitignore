@@ -1,3 +1,6 @@
 target
+out
 DFSchematics.exe
 DFSchematics.iml
+dependency-reduced-pom.xml
+launch4j.log
