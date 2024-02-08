@@ -19,7 +19,6 @@ import net.ryanland.dfschematics.df.ItemAPIManager;
 import net.ryanland.dfschematics.df.code.CodeLine;
 import net.ryanland.dfschematics.schematic.DFSchematic;
 import net.sandrohc.schematic4j.SchematicLoader;
-import net.sandrohc.schematic4j.exception.ParsingException;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,7 +82,7 @@ public class Controller implements Initializable {
     public static DFSchematic schematic;
 
     @FXML
-    void pickFile() throws IOException {
+    void pickFile() {
         // create file chooser
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Schematic...");
@@ -113,7 +112,7 @@ public class Controller implements Initializable {
         // read schematic
         try {
             schematic = new DFSchematic(SchematicLoader.load(file));
-        } catch (ParsingException e) {
+        } catch (Exception e) {
             error("Error: " + e.getMessage());
             return;
         }
@@ -122,7 +121,8 @@ public class Controller implements Initializable {
         if (ItemAPIManager.recodeConnected) sendRecode.setDisable(false);
         if (ItemAPIManager.codeClientConnected && ItemAPIManager.codeClientAuthorized) sendCodeClient.setDisable(false);
         configureButton.setDisable(false);
-        success("Successfully loaded");
+        success("Successfully loaded (Size: %sx%sx%s)"
+            .formatted(schematic.getSchematic().width(), schematic.getSchematic().height(), schematic.getSchematic().length()));
         System.out.println("Loaded Schematic: " + file.getName());
     }
 
