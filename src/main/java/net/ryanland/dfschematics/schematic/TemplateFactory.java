@@ -4,6 +4,7 @@ import net.ryanland.dfschematics.df.code.*;
 import net.ryanland.dfschematics.df.value.*;
 import net.sandrohc.schematic4j.schematic.Schematic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -30,27 +31,19 @@ public class TemplateFactory {
         }
 
         List<CodeBlock> blocks = getBlocks();
+        codeLine1.add(blocks.remove(0));
         List<CodeLine> lines = new ArrayList<>();
+        lines.add(codeLine1);
+
         if (split) {
             //max 2 codeblocks per template for block data, for big schematics with large block data, otherwise template nbt max is reached
             List<List<CodeBlock>> splitBlocks = partition(blocks, 2);
-            int i = 0;
             for (List<CodeBlock> segment : splitBlocks) {
-                if (i == 0) {//for first template with metadata+palette
-                    codeLine1.addAll(segment);
-                    lines.add(codeLine1);
-                    i++;
-                    continue;
-                }
                 CodeLine line = new CodeLine();
                 line.addAll(segment);
                 lines.add(line);
-                i++;
             }
-        } else {
-            codeLine1.addAll(blocks);
-            lines.add(codeLine1);
-        }
+        } else lines.get(0).addAll(blocks);
 
         if (!schematic.getTrackedBlocks().getBlocks().isEmpty()) {
             CodeLine line = new CodeLine();
