@@ -75,7 +75,6 @@ public class DFSchematic {
     private static final Map<String, String> DEFAULT_BLOCK_STATES = Map.of(
         "snowy", "false",
         "axis", "y",
-        "lit", "false",
         "powered", "false",
         "open", "false"
     );
