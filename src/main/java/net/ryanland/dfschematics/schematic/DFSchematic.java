@@ -7,6 +7,7 @@ import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockEntity;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DFSchematic {
@@ -131,13 +132,13 @@ public class DFSchematic {
                 Map<String, Object> backCompound = ((Map<String, Object>) block.data.get("back_text"));
 
                 Sign.Side front = new Sign.Side(
-                    ((List<String>) frontCompound.get("messages")).toArray(String[]::new),
+                    ((List<String>) frontCompound.get("messages")),
                     ((byte) frontCompound.get("has_glowing_text")) == 1,
                     (String) frontCompound.get("color")
                 );
 
                 Sign.Side back = new Sign.Side(
-                    ((List<String>) backCompound.get("messages")).toArray(String[]::new),
+                    ((List<String>) backCompound.get("messages")),
                     ((byte) backCompound.get("has_glowing_text")) == 1,
                     (String) backCompound.get("color")
                 );
@@ -147,12 +148,12 @@ public class DFSchematic {
 
             } else if (block.data.containsKey("Text1")) {
                 // Signs before MC 1.20 ---------
-                Sign sign = new Sign(block.pos, new Sign.Side(new String[]{
+                Sign sign = new Sign(block.pos, new Sign.Side(List.of(
                     ((String) block.data.get("Text1")),
                     ((String) block.data.get("Text2")),
                     ((String) block.data.get("Text3")),
-                    ((String) block.data.get("Text4"))}, false, "black"),
-                    new Sign.Side(new String[]{"", "", "", ""}, false, "black"));
+                    ((String) block.data.get("Text4"))), false, "black"),
+                    new Sign.Side(List.of("", "", "", ""), false, "black"));
                 if (!sign.isEmpty()) signs.add(sign);
             } else if (block.data.containsKey("SkullOwner")) {
                 // Heads -------

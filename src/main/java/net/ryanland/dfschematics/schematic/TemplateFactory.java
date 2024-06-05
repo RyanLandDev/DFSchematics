@@ -71,7 +71,7 @@ public class TemplateFactory {
         String text = "";
         for (String material : palette) {
             text += material + ".";
-            if (text.length() > 2400) {//don't go over df text limit 2500
+            if (text.length() > 3000) {//create the next string, don't go over data limit
                 texts.add(text.substring(0, text.length()-1));//-1 removes final comma
                 text = "";
             }
@@ -88,7 +88,7 @@ public class TemplateFactory {
         String text = "";
         for (StructurePart part : structure.getParts()) {
             text += part.getText() + ".";
-            if (text.length() > 2400) {//don't go over df text limit 2500
+            if (text.length() > 3000) {//create the next string, don't go over data limit
                 texts.add(text.substring(0, text.length()-1));//-1 removes final comma
                 text = "";
             }
@@ -107,7 +107,7 @@ public class TemplateFactory {
             String str = "H";
             for (Head head : heads) {
                 str += head.pos().x + "," + head.pos().y + "," + head.pos().z + "," + head.texture() + ";";
-                if (str.length() > 2400) {
+                if (str.length() > 3000) {
                     values.add(new Str(str.substring(0, str.length() - 1)));
                     str = "H";
                 }

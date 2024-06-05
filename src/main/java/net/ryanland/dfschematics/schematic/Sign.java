@@ -9,6 +9,7 @@ import net.ryanland.dfschematics.df.value.Item;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 
 import java.util.Arrays;
+import java.util.List;
 
 public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item {
 
@@ -46,8 +47,8 @@ public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item
     }
 
     public boolean isEmpty() {
-        return Arrays.stream(front.lines).allMatch(this::isComponentEmpty) &&
-            Arrays.stream(back.lines).allMatch(this::isComponentEmpty);
+        return front.lines.stream().allMatch(this::isComponentEmpty) &&
+            back.lines.stream().allMatch(this::isComponentEmpty);
     }
 
     private boolean isComponentEmpty(String json) {
@@ -56,7 +57,7 @@ public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item
         return LegacyComponentSerializer.legacySection().serialize(component).isEmpty();
     }
 
-    record Side(String[] lines, boolean glowing, String color) {
+    record Side(List<String> lines, boolean glowing, String color) {
 
         private String getDFGlowing() {
             return extra(glowing ? "Enable" : "Disable");
