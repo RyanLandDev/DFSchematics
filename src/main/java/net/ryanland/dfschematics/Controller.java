@@ -114,6 +114,7 @@ public class Controller implements Initializable {
             schematic = new DFSchematic(SchematicLoader.load(file));
         } catch (Exception e) {
             error("Error: " + e.getMessage());
+            e.printStackTrace();
             return;
         }
 
@@ -121,6 +122,7 @@ public class Controller implements Initializable {
         if (ItemAPIManager.recodeConnected) sendRecode.setDisable(false);
         if (ItemAPIManager.codeClientConnected && ItemAPIManager.codeClientAuthorized) sendCodeClient.setDisable(false);
         configureButton.setDisable(false);
+        System.out.println(schematic.getSchematic().format());
         success("Successfully loaded (Size: %sx%sx%s)"
             .formatted(schematic.getSchematic().width(), schematic.getSchematic().height(), schematic.getSchematic().length()));
         System.out.println("Loaded Schematic: " + file.getName());

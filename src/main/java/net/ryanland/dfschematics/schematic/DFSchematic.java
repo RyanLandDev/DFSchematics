@@ -158,10 +158,12 @@ public class DFSchematic {
             } else if (block.data.containsKey("SkullOwner")) {
                 // Heads -------
                 Map<String, Object> data = (TreeMap<String, Object>) block.data.get("SkullOwner");
-                String owner = (String) data.get("Name");
-                String value = (String) ((Map<String, Object>) ((List<Object>) ((Map<String, Object>) data.get("Properties")).get("textures")).get(0)).get("Value");
-                String texture = (owner == null || owner.equals("DF-HEAD") ? value.substring(88) : owner);//substring removes unnecessary eyJ0ZX....
-                heads.add(new Head(block.pos(), texture));
+                if (data.containsKey("Properties")) {
+                    String owner = (String) data.get("Name");
+                    String value = (String) ((Map<String, Object>) ((List<Object>) ((Map<String, Object>) data.get("Properties")).get("textures")).get(0)).get("Value");
+                    String texture = (owner == null || owner.equals("DF-HEAD") ? value.substring(88) : owner);//substring removes unnecessary eyJ0ZX....
+                    heads.add(new Head(block.pos(), texture));
+                }
             }
         }
     }
