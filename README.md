@@ -1,4 +1,4 @@
-# DFSchematics v1.3.2
+# DFSchematics v1.4.1
 Tool to import schematic files into DiamondFire.
 
 ![](src/main/resources/example.png)

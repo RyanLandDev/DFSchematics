@@ -6,7 +6,7 @@
 
     <groupId>net.ryanland</groupId>
     <artifactId>DFSchematics</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <name>DFSchematics</name>
 
     <properties>
