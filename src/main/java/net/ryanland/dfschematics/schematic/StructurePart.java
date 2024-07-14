@@ -2,7 +2,7 @@ package net.ryanland.dfschematics.schematic;
 
 public final class StructurePart {
 
-    private final int blockIndex;
+    private final int blockIndex;//-1 equals air
     private int amount;
 
     public StructurePart(int blockIndex, int amount) {
@@ -39,6 +39,8 @@ public final class StructurePart {
     }
 
     public String getText() {
+        if (blockIndex == -1) return String.valueOf(amount);//air
+
         int length = compressChars.length; // 80, index 0-79
 
         int char1Index = (int) Math.floor(blockIndex / length) - 1;

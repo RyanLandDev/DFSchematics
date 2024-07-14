@@ -14,10 +14,11 @@ public class StructureContainer {
 
     public void addToPalette(String material) {
         material = material.replace("minecraft:", "");
-        if (!palette.contains(material)) palette.add(material);
+        if (!material.equals("air") && !palette.contains(material)) palette.add(material);
     }
 
     public int indexOf(String material) {
+        if (material.equals("air")) return -1;
         return palette.indexOf(material);
     }
 
