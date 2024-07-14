@@ -33,4 +33,10 @@ public class SetVariableCreateList extends SetVariable {
     public String getAction() {
         return "CreateList";
     }
+
+    @Override
+    public int getWeight() {
+        if (getParameters().get(1).getType().equals("item")) return 1;// block entities
+        return getParameters().size();
+    }
 }

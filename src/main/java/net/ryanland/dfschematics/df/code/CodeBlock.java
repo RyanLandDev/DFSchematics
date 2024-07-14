@@ -8,6 +8,8 @@ public interface CodeBlock {
 
     String getAction();
 
+    int getWeight();
+
     default JsonObject toJson() {
         JsonObject json = new JsonObject();
         json.addProperty("id", "block");

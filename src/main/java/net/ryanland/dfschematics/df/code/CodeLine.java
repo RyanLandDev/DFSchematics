@@ -23,6 +23,10 @@ public class CodeLine {
         return codeBlocks;
     }
 
+    public boolean isEmpty() {
+        return getCodeBlocks().isEmpty();
+    }
+
     /**
      * Adds a {@link CodeBlock} to this line at the end.
      * @param codeBlock The code block to add

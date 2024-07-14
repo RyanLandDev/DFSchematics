@@ -169,14 +169,14 @@ public class Controller implements Initializable {
 
     @FXML
     void sendTemplateToRecode() throws InterruptedException {
-        List<CodeLine> codeLines = schematic.getTemplateFactory().generate(true);
+        List<CodeLine> codeLines = schematic.getTemplateFactory().generate();
         ItemAPIManager.sendTemplatesToRecode(codeLines, selectedFile.getName());
         success("Template" + (codeLines.size() == 1 ? "" : "s") + " sent");
     }
 
     @FXML
     void sendTemplateToCodeClient() {
-        List<CodeLine> codeLines = schematic.getTemplateFactory().generate(true);
+        List<CodeLine> codeLines = schematic.getTemplateFactory().generate();
         ItemAPIManager.sendTemplatesToCodeClient(codeLines, selectedFile.getName());
         success("Template" + (codeLines.size() == 1 ? "" : "s") + " sent");
     }

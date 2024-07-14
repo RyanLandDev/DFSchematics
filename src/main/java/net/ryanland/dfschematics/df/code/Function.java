@@ -38,6 +38,11 @@ public class Function implements ChestCodeBlock {
     }
 
     @Override
+    public int getWeight() {
+        return 0;
+    }
+
+    @Override
     public JsonObject toJson() {
         JsonObject json = ChestCodeBlock.super.toJson();
         json.remove("action");

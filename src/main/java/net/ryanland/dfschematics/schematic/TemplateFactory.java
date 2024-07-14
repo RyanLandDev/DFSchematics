@@ -19,37 +19,34 @@ public class TemplateFactory {
         this.file = schematic.getSchematic();
     }
 
-    public List<CodeLine> generate(boolean split) {
-        CodeLine codeLine1 = new CodeLine();
-        codeLine1.add(new Function(schematic.getName()));
-        codeLine1.add(getMetadata());
-        codeLine1.addAll(getPalette());
-
-        // block entities
+    public List<CodeLine> generate() {
+        // put codeblocks together
+        List<CodeBlock> codeBlocks = new ArrayList<>();
+        codeBlocks.add(new Function(schematic.getName()));
+        codeBlocks.add(getMetadata());
+        codeBlocks.addAll(getPalette());
         if (!schematic.getHeads().isEmpty() || !schematic.getSigns().isEmpty()) {
-            codeLine1.addAll(getBlockEntities());
+            codeBlocks.addAll(getBlockEntities());
         }
-
-        List<CodeBlock> blocks = getBlocks();
-        codeLine1.add(blocks.remove(0));
-        List<CodeLine> lines = new ArrayList<>();
-        lines.add(codeLine1);
-
-        if (split) {
-            //max 2 codeblocks per template for block data, for big schematics with large block data, otherwise template nbt max is reached
-            List<List<CodeBlock>> splitBlocks = partition(blocks, 2);
-            for (List<CodeBlock> segment : splitBlocks) {
-                CodeLine line = new CodeLine();
-                line.addAll(segment);
-                lines.add(line);
-            }
-        } else lines.get(0).addAll(blocks);
-
+        codeBlocks.addAll(getBlocks());
         if (!schematic.getTrackedBlocks().getBlocks().isEmpty()) {
-            CodeLine line = new CodeLine();
-            line.addAll(getTrackedBlocks());
-            lines.add(line);
+            codeBlocks.addAll(getTrackedBlocks());
         }
+
+        // splitter
+        List<CodeLine> lines = new ArrayList<>();
+        int weight = 0;
+        CodeLine line = new CodeLine();
+        for (CodeBlock block : codeBlocks) {
+            weight += block.getWeight();
+            line.add(block);
+            if (weight >= 52) {
+                lines.add(line);
+                line = new CodeLine();
+                weight = 0;
+            }
+        }
+        if (!line.isEmpty()) lines.add(line);
 
         return lines;
     }
