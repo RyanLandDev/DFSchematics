@@ -8,6 +8,8 @@ module net.ryanland.dfschematics {
     requires net.kyori.adventure;
     requires net.kyori.adventure.text.serializer.gson;
     requires net.kyori.adventure.text.serializer.legacy;
+    requires org.jetbrains.annotations;
+    requires java.logging;
 
     opens net.ryanland.dfschematics to javafx.fxml;
     exports net.ryanland.dfschematics;

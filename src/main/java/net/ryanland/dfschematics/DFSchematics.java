@@ -9,14 +9,19 @@ import javafx.stage.Stage;
 import net.ryanland.dfschematics.df.ItemAPIManager;
 
 import java.io.IOException;
+import java.util.Properties;
 
 public class DFSchematics extends Application {
 
     public static Stage stage;
     public static HostServices hostServices;
+    public static String version;
+    public static String builderTemplate;
 
     @Override
     public void start(Stage stage) throws IOException {
+        fetchProperties();
+
         FXMLLoader fxmlLoader = new FXMLLoader(DFSchematics.class.getResource("scene.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         //setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
@@ -29,6 +34,13 @@ public class DFSchematics extends Application {
         DFSchematics.stage = stage;
         DFSchematics.hostServices = getHostServices();
         ItemAPIManager.attemptConnections();
+    }
+
+    private void fetchProperties() throws IOException {
+        Properties properties = new Properties();
+        properties.load(this.getClass().getClassLoader().getResourceAsStream("project.properties"));
+        version = properties.getProperty("version");
+        builderTemplate = properties.getProperty("template");
     }
 
     public static void main(String[] args) {

@@ -7,7 +7,6 @@ import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockEntity;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class DFSchematic {

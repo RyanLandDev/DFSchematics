@@ -1,5 +1,6 @@
 package net.ryanland.dfschematics;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,13 +22,11 @@ import net.ryanland.dfschematics.schematic.DFSchematic;
 import net.sandrohc.schematic4j.SchematicLoader;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
 import java.util.List;
-import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Controller implements Initializable {
 
@@ -51,13 +50,7 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Properties properties = new Properties();
-        try {
-            properties.load(this.getClass().getClassLoader().getResourceAsStream("project.properties"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        versionLabel.setText("v" + properties.getProperty("version"));
+        versionLabel.setText("v" + DFSchematics.version);
 
         root = borderPane;
 
@@ -68,6 +61,38 @@ public class Controller implements Initializable {
         ItemAPIManager.sendCodeClient = sendCodeClient;
         ItemAPIManager.sendBuilderCodeClient = sendBuilderCodeClient;
         ItemAPIManager.retryButton = retryButton;
+
+        Executors.newScheduledThreadPool(0).schedule(this::checkForUpdates, 500, TimeUnit.MILLISECONDS);
+    }
+
+    private void checkForUpdates() {
+        Platform.runLater(() -> {
+            UpdateCheckController.checker.check();
+            if (UpdateCheckController.checker.isUpdateAvailable()) {
+                showUpdateAvailable();
+            }
+        });
+    }
+
+    private void showUpdateAvailable() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("update.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Update Available");
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.getIcons().add(new Image(String.valueOf(DFSchematics.class.getResource("logo.png"))));
+            stage.setResizable(false);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(DFSchematics.stage.getScene().getWindow());
+            stage.setOnCloseRequest(evt -> borderPane.setDisable(false));
+            borderPane.setDisable(true);
+            stage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -181,17 +206,15 @@ public class Controller implements Initializable {
         success("Template" + (codeLines.size() == 1 ? "" : "s") + " sent");
     }
 
-    private static final String BUILDER_TEMPLATE = new Scanner(Controller.class.getResourceAsStream("template.txt"), "UTF-8").useDelimiter("\\A").next();
-
     @FXML
     void sendBuilderTemplateToRecode() throws InterruptedException {
-        ItemAPIManager.sendRawTemplatesToRecode(List.of(BUILDER_TEMPLATE), "DFSchematics Builder");
+        ItemAPIManager.sendRawTemplatesToRecode(List.of(DFSchematics.builderTemplate), "DFSchematics Builder");
         success("Template sent");
     }
 
     @FXML
     void sendBuilderTemplateToCodeClient() {
-        ItemAPIManager.sendRawTemplatesToCodeClient(List.of(BUILDER_TEMPLATE), "DFSchematics Builder");
+        ItemAPIManager.sendRawTemplatesToCodeClient(List.of(DFSchematics.builderTemplate), "DFSchematics Builder");
         success("Template sent");
     }
 
