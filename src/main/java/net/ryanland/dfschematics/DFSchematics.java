@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import net.ryanland.dfschematics.df.ItemAPIManager;
+import net.ryanland.dfschematics.df.api.API;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -22,7 +22,7 @@ public class DFSchematics extends Application {
     public void start(Stage stage) throws IOException {
         fetchProperties();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(DFSchematics.class.getResource("scene.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(DFSchematics.class.getResource("fxml/main.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         //setUserAgentStylesheet(new PrimerDark().getUserAgentStylesheet());
         stage.setTitle("DFSchematics");
@@ -33,7 +33,7 @@ public class DFSchematics extends Application {
 
         DFSchematics.stage = stage;
         DFSchematics.hostServices = getHostServices();
-        ItemAPIManager.attemptConnections();
+        API.attemptConnections();
     }
 
     private void fetchProperties() throws IOException {

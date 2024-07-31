@@ -1,4 +1,4 @@
-package net.ryanland.dfschematics.schematic;
+package net.ryanland.dfschematics.schematic.special;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -8,7 +8,6 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.ryanland.dfschematics.df.value.Item;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockPos;
 
-import java.util.Arrays;
 import java.util.List;
 
 public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item {
@@ -57,7 +56,7 @@ public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item
         return LegacyComponentSerializer.legacySection().serialize(component).isEmpty();
     }
 
-    record Side(List<String> lines, boolean glowing, String color) {
+    public record Side(List<String> lines, boolean glowing, String color) {
 
         private String getDFGlowing() {
             return extra(glowing ? "Enable" : "Disable");

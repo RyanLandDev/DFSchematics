@@ -1,4 +1,4 @@
-package net.ryanland.dfschematics.schematic;
+package net.ryanland.dfschematics.schematic.special;
 
 import javafx.scene.image.ImageView;
 import net.ryanland.dfschematics.df.value.Location;

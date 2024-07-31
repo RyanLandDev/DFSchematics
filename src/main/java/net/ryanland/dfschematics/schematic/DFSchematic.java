@@ -1,7 +1,11 @@
 package net.ryanland.dfschematics.schematic;
 
-import net.ryanland.dfschematics.Controller;
+import net.ryanland.dfschematics.fxml.MainController;
 import net.ryanland.dfschematics.df.value.Location;
+import net.ryanland.dfschematics.schematic.special.Head;
+import net.ryanland.dfschematics.schematic.special.Sign;
+import net.ryanland.dfschematics.schematic.special.TrackedBlock;
+import net.ryanland.dfschematics.schematic.special.TrackedBlocks;
 import net.sandrohc.schematic4j.schematic.Schematic;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlock;
 import net.sandrohc.schematic4j.schematic.types.SchematicBlockEntity;
@@ -26,7 +30,7 @@ public class DFSchematic {
         this.schematic = schematic;
         read();
 
-        name = Objects.requireNonNullElse(schematic.name(), Controller.selectedFile.getName().replaceAll("\\.schem$|\\.litematic$|\\.schematic$|", ""));
+        name = Objects.requireNonNullElse(schematic.name(), MainController.selectedFile.getName().replaceAll("\\.schem$|\\.litematic$|\\.schematic$|", ""));
         author = Objects.requireNonNullElse(schematic.author(), "Unknown");
 
         templateFactory = new TemplateFactory(this);

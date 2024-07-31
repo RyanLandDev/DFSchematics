@@ -1,4 +1,4 @@
-package net.ryanland.dfschematics.schematic;
+package net.ryanland.dfschematics.schematic.special;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class TrackedBlocks {
         blocks.remove(block);
     }
 
-    protected void reset() {
+    public void reset() {
         for (TrackedBlock block : blocks) block.getLocations().clear();
     }
 

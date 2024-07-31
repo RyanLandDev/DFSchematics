@@ -1,4 +1,4 @@
-package net.ryanland.dfschematics;
+package net.ryanland.dfschematics.fxml;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -10,48 +10,39 @@ import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import net.ryanland.dfschematics.df.value.Scope;
 import net.ryanland.dfschematics.df.value.Variable;
-import net.ryanland.dfschematics.schematic.TrackedBlock;
+import net.ryanland.dfschematics.schematic.special.TrackedBlock;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static net.ryanland.dfschematics.Controller.schematic;
+import static net.ryanland.dfschematics.fxml.MainController.schematic;
 
+// "Configure schematic..." controller
 public class ConfigController implements Initializable {
 
     static Label configLabel;
 
-    @FXML
-    private Label label;
-    @FXML
-    private TextField schemNameField;
-    @FXML
-    private TextField authorField;
-    @FXML
-    private CheckBox removeCheckBox;
-    @FXML
-    private ChoiceBox<Scope> varScopePicker;
-    @FXML
-    private ListView<TrackedBlock> trackedBlocks;
-    @FXML
-    private TextField varNameField;
-    @FXML
-    private TextField blockField;
-    @FXML
-    private Button addTrackedBlockButton;
-    @FXML
-    private Spinner<Double> offsetX;
-    @FXML
-    private Spinner<Double> offsetY;
-    @FXML
-    private Spinner<Double> offsetZ;
+    @FXML private Label label;
+    @FXML private TextField schemNameField;
+    @FXML private TextField authorField;
+
+    @FXML private CheckBox removeCheckBox;
+    @FXML private ChoiceBox<Scope> varScopePicker;
+    @FXML private ListView<TrackedBlock> trackedBlocks;
+    @FXML private TextField varNameField;
+    @FXML private TextField blockField;
+    @FXML private Button addTrackedBlockButton;
+
+    @FXML private Spinner<Double> offsetX;
+    @FXML private Spinner<Double> offsetY;
+    @FXML private Spinner<Double> offsetZ;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         configLabel = label;
-        label.setText(Controller.selectedFile.getName());
+        label.setText(MainController.selectedFile.getName());
 
         schemNameField.setText(schematic.getName());
         schemNameField.textProperty().addListener((l, oldName, newName) -> schematic.setName(newName));
@@ -104,7 +95,7 @@ public class ConfigController implements Initializable {
     @FXML
     void close(ActionEvent event) {
         ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
-        Controller.root.setDisable(false);
+        MainController.instance.disableRoot(false);
     }
 
     private List<Variable> usedVariables = new ArrayList<>();

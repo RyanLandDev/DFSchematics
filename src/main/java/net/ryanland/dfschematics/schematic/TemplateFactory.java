@@ -2,12 +2,12 @@ package net.ryanland.dfschematics.schematic;
 
 import net.ryanland.dfschematics.df.code.*;
 import net.ryanland.dfschematics.df.value.*;
+import net.ryanland.dfschematics.schematic.special.Head;
+import net.ryanland.dfschematics.schematic.special.TrackedBlock;
 import net.sandrohc.schematic4j.schematic.Schematic;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class TemplateFactory {
 
@@ -20,6 +20,10 @@ public class TemplateFactory {
     }
 
     public List<CodeLine> generate() {
+        return splitCodeBlocks(generateCodeBlocks());
+    }
+
+    public List<CodeBlock> generateCodeBlocks() {
         // put codeblocks together
         List<CodeBlock> codeBlocks = new ArrayList<>();
         codeBlocks.add(new Function(schematic.getName()));
@@ -32,7 +36,10 @@ public class TemplateFactory {
         if (!schematic.getTrackedBlocks().getBlocks().isEmpty()) {
             codeBlocks.addAll(getTrackedBlocks());
         }
+        return codeBlocks;
+    }
 
+    public List<CodeLine> splitCodeBlocks(List<CodeBlock> codeBlocks) {
         // splitter
         List<CodeLine> lines = new ArrayList<>();
         int weight = 0;

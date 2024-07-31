@@ -10,9 +10,11 @@ module net.ryanland.dfschematics {
     requires net.kyori.adventure.text.serializer.legacy;
     requires org.jetbrains.annotations;
     requires java.logging;
+    requires jo.nbt;
+    requires static lombok;
 
     opens net.ryanland.dfschematics to javafx.fxml;
     exports net.ryanland.dfschematics;
-    exports net.ryanland.dfschematics.df;
-    opens net.ryanland.dfschematics.df to javafx.fxml;
+    exports net.ryanland.dfschematics.fxml;
+    opens net.ryanland.dfschematics.fxml to javafx.fxml;
 }

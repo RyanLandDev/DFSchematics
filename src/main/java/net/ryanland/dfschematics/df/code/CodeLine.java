@@ -2,9 +2,9 @@ package net.ryanland.dfschematics.df.code;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import lombok.SneakyThrows;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -78,11 +78,12 @@ public class CodeLine {
         return json;
     }
 
-    public String toCompressedJson() throws IOException {
+    public String toCompressedJson() {
         return compressGzipBase64(toJson().toString());
     }
 
-    private static String compressGzipBase64(String uncompressed) throws IOException {
+    @SneakyThrows
+    private static String compressGzipBase64(String uncompressed) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream(uncompressed.length());
         GZIPOutputStream gzip = new GZIPOutputStream(bos);
 

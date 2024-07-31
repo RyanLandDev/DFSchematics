@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" prefHeight="352.0" prefWidth="574.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ryanland.dfschematics.Controller">
+<BorderPane fx:id="root" prefHeight="352.0" prefWidth="574.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.ryanland.dfschematics.fxml.MainController">
    <center>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="299.0" prefWidth="600.0">
          <children>
@@ -35,23 +35,19 @@
                   <Insets bottom="5.0" />
                </VBox.margin>
             </Label>
-            <Button fx:id="configureButton" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="60.0" layoutY="86.0" mnemonicParsing="false" onAction="#configure" prefHeight="25.0" prefWidth="290.0" text="Configure schematic...">
+            <Button fx:id="configureButton" alignment="CENTER" contentDisplay="CENTER" disable="true" layoutX="60.0" layoutY="86.0" mnemonicParsing="false" onAction="#configure" prefHeight="25.0" prefWidth="296.0" text="Configure schematic...">
                <VBox.margin>
                   <Insets bottom="5.0" />
                </VBox.margin>
             </Button>
             <HBox alignment="CENTER" prefHeight="26.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="sendRecode" disable="true" mnemonicParsing="false" onAction="#sendTemplateToRecode" text="Send to recode">
+                  <Button fx:id="sendTemplates" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#sendTemplates" text="Send templates">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="sendCodeClient" alignment="CENTER_RIGHT" disable="true" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#sendTemplateToCodeClient" text="Send to CodeClient">
-                     <HBox.margin>
-                        <Insets right="5.0" />
-                     </HBox.margin>
-                  </Button>
+                  <Button fx:id="placeTemplates" alignment="CENTER" disable="true" mnemonicParsing="false" onAction="#placeTemplates" text="Place templates using CodeClient" />
                </children>
                <VBox.margin>
                   <Insets bottom="40.0" />
@@ -59,12 +55,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="33.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="sendBuilderRecode" disable="true" mnemonicParsing="false" onAction="#sendBuilderTemplateToRecode" text="Send Builder to recode">
-                     <HBox.margin>
-                        <Insets right="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="sendBuilderCodeClient" disable="true" layoutX="153.0" layoutY="21.0" mnemonicParsing="false" onAction="#sendBuilderTemplateToCodeClient" text="Send Builder to CodeClient">
+                  <Button fx:id="sendBuilder" disable="true" mnemonicParsing="false" onAction="#sendBuilderTemplate" text="Send Schematic Builder">
                      <HBox.margin>
                         <Insets right="5.0" />
                      </HBox.margin>
