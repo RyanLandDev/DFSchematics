@@ -42,8 +42,7 @@ public class CodeClientAPI {
         for (String codeLine : codeLines) {
             i++;
             String counter = codeLines.size() > 1 ? " "+i+"/"+codeLines.size() : "";
-            String nbt = "{Count:1b,id:\"minecraft:ender_chest\",tag:{PublicBukkitValues:{\"hypercube:codetemplatedata\":'{\"author\":\"RyanLand\",\"name\":\"&b" + name + counter + " \",\"version\":1,\"code\":\"" +
-                codeLine + "\"}'},display:{Name:'{\"extra\":[{\"color\":\"aqua\",\"text\":\"" + name + counter + "\"}],\"text\":\"\"}'}}}";
+            String nbt = "{components:{\"minecraft:custom_data\":{PublicBukkitValues:{\"hypercube:codetemplatedata\":'{\"author\":\"RyanLand\",\"name\":\"" + name + counter + "\",\"version\":1,\"code\":\""+ codeLine + "\"}'}},\"minecraft:custom_name\":'{\"text\":\""+ name + counter +"\", \"color\":\"aqua\"}'},count:1,id:\"minecraft:ender_chest\"}";
             socket.send("give " + nbt);
         }
     }
