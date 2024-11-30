@@ -9,13 +9,18 @@ import java.util.List;
 /**
  * Represents a code block with a chest (can have parameters + tags)
  */
-public interface ChestCodeBlock extends CodeBlock {
+public interface ChestCodeBlock{
 
     List<Value> getParameters();
 
     List<Tag> getTags();
 
-    @Override
+    String getBlock();
+
+    String getAction();
+
+    int getWeight();
+    
     default JsonObject toJson() {
         JsonObject json = CodeBlock.super.toJson();
         JsonObject args = new JsonObject();

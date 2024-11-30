@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 
 public interface CodeBlock {
 
+    List<Value> getParameters();
+
     String getBlock();
 
     String getAction();
