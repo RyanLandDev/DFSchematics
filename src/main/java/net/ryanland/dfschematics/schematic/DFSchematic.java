@@ -158,8 +158,17 @@ public class DFSchematic {
                     ((String) block.data.get("Text4"))), false, "black"),
                     new Sign.Side(List.of("", "", "", ""), false, "black"));
                 if (!sign.isEmpty()) signs.add(sign);
+            } else if (block.data.containsKey("profile")) {
+                // Heads after MC 1.20.5 -------
+                Map<String, Object> data = (TreeMap<String, Object>) block.data.get("profile");
+                if (data.containsKey("properties")) {
+                    String owner = (String) data.get("name");
+                    String value = (String) ((Map<String, Object>) ((List<Object>) data.get("properties")).get(0)).get("value");
+                    String texture = (owner == null || owner.equals("DF-HEAD") ? value.substring(88) : owner);//substring removes unnecessary eyJ0ZX....
+                    heads.add(new Head(block.pos(), texture));
+                }
             } else if (block.data.containsKey("SkullOwner")) {
-                // Heads -------
+                // Heads before MC 1.20.5 -------
                 Map<String, Object> data = (TreeMap<String, Object>) block.data.get("SkullOwner");
                 if (data.containsKey("Properties")) {
                     String owner = (String) data.get("Name");
