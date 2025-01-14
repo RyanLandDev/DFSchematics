@@ -18,8 +18,8 @@ public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item
     @Override
     public String getItemNBT() {
         JsonObject item = new JsonObject();
-        item.addProperty("Count", 1);
         item.addProperty("id", "minecraft:oak_sign");
+        item.addProperty("count", 1);
 
         JsonArray lore = new JsonArray(8);
         for (String frontLine : front.lines) lore.add(frontLine);
@@ -29,16 +29,16 @@ public record Sign(SchematicBlockPos pos, Side front, Side back) implements Item
         lore.add(back.getDFColor());
         lore.add(back.getDFGlowing());
 
-        JsonObject display = new JsonObject();
-        display.add("Lore", lore);
-        display.addProperty("Name", extra("%s,%s,%s".formatted(pos.x, pos.y, pos.z)));
-
-        JsonObject tag = new JsonObject();
-        tag.add("display", display);
-        item.add("tag", tag);
+        JsonObject components = new JsonObject();
+        components.add("lore", lore);
+        components.addProperty("custom_name", extra("%s,%s,%s".formatted(pos.x, pos.y, pos.z)));
+        item.add("components", components);
 
         return item.toString();
-        // result: Oak sign with lores; name is xyz, 1-4 front lines, 5-6 front color+glowing, 7-10 back lines, 11-12 back color+glowing
+        // Results in an oak sign with
+        // Item name as xyz coordinates
+        // 1-4 lore lines as sign's front lines & 5-6 lore lines as sign's front color and glow
+        // 7-10 lore lines as sign's back lines & 11-12 lore lines as sign's back color and glow
     }
 
     private static String extra(String input) {
